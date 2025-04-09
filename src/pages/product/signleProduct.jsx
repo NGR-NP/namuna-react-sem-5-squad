@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { Link, Outlet, useParams } from "react-router";
 export default function SingleProductPage() {
   const { productID } = useParams();
   const [product, setProduct] = useState(null);
@@ -47,6 +47,37 @@ export default function SingleProductPage() {
           <h3>{product?.description}</h3>
         </div>
       )}
+      <div style={{ display: "flex", gap: "1rem" }}>
+        <button>
+          <Link to="review">review</Link>
+        </button>
+        <button>
+          <Link to="overview">overview</Link>
+        </button>
+      </div>
+      <Outlet />
+    </div>
+  );
+}
+
+export function ReviewPage() {
+  return (
+    <div>
+      <div>
+        <Link to={"../"}>Go back</Link>
+      </div>
+      <h1>review Page</h1>
+    </div>
+  );
+}
+
+export function OverviewPage() {
+  return (
+    <div>
+      <div>
+        <Link to={"../"}>Go back</Link>
+      </div>
+      <h1>Overview Page</h1>
     </div>
   );
 }
