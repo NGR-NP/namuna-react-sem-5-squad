@@ -25,7 +25,7 @@ export default function AppRoutes() {
           <Route element={<ProductPage />} index />
           <Route path=":productID" element={<SingleProductPage />}>
             <Route path="review" element={<ReviewPage />} />
-            <Route path="overview" element={<OverviewPage />} />
+            <Route index element={<OverviewPage />} />
           </Route>
         </Route>
         <Route path="*" element={<div>404</div>} />
