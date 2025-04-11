@@ -1,4 +1,4 @@
-import { Routes, Route, Outlet, Link } from "react-router";
+import { Routes, Route, Outlet, Link, NavLink } from "react-router";
 import HomePage from "./pages/homePage";
 import SingleProductPage, {
   OverviewPage,
@@ -9,16 +9,7 @@ import ProductPage from "./pages/product";
 export default function AppRoutes() {
   return (
     <Routes>
-      <Route
-        path="/"
-        element={
-          <div>
-            <Navbar />
-            <Outlet />
-            <Footer />
-          </div>
-        }
-      >
+      <Route path="/" element={<UserLayout />}>
         <Route index element={<HomePage />} />
         <Route path="contact" element={<div>Contact Page</div>} />
         <Route path="product">
@@ -46,16 +37,34 @@ export function UserLayout() {
   );
 }
 
+const links = [
+  {
+    path: "/",
+    name: "Home",
+  },
+  {
+    path: "/product",
+    name: "Product",
+  },
+];
 export function Navbar() {
   console.log("Navbar");
   return (
     <div>
       <div>Navbar</div>
-      {["/", "/contact", "/product"].map((path) => (
-        <Link key={path} to={path}>
-          {path}
-        </Link>
-      ))}
+      <div className="space-x-2">
+        {links.map(({ name, path }) => (
+          <NavLink
+            className={({ isActive }) =>
+              isActive ? "text-blue-600" : "text-gray-50"
+            }
+            key={path}
+            to={path}
+          >
+            {name}
+          </NavLink>
+        ))}
+      </div>
     </div>
   );
 }
