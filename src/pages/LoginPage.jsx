@@ -1,5 +1,8 @@
 // import { useReducer } from "react";
 
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+
 // const reducer = (state, action) => {
 //   if (action.type === "username") {
 //     return { ...state, username: action.payload };
@@ -48,14 +51,34 @@
 // }
 
 export default function LoginPage() {
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+  useCheckAuth(true);
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const username = formData.get("username");
     const password = formData.get("password");
     console.log("password", username);
     console.log("password", password);
-    e.target.reset();
+
+    const credentials = { username, password };
+    try {
+      const res = await fetch("https://fakestoreapi.com/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(credentials),
+      });
+      const data = await res.json();
+      console.log("data", data);
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+        navigate("/product");
+      }
+      e.target.reset();
+    } catch (error) {
+      console.error(error);
+      throw new Error("something went wrong");
+    }
   };
   return (
     <div style={{ width: "100%", textAlign: "center" }}>
@@ -72,3 +95,27 @@ export default function LoginPage() {
     </div>
   );
 }
+
+export const useCheckAuth = (navigateTo = false) => {
+  const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const hasToken = localStorage.getItem("token");
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
+  };
+  useEffect(() => {
+    if (!hasToken) {
+      if (navigateTo) {
+        navigate("/login");
+      }
+      setIsLoggedIn(false);
+    } else {
+      if (navigateTo) {
+        navigate("/product");
+      }
+      setIsLoggedIn(true);
+    }
+  }, [hasToken, navigate, navigateTo]);
+  return { isLoggedIn, handleLogout };
+};

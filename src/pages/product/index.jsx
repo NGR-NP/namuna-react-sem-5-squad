@@ -15,10 +15,19 @@ export default function ProductPage() {
   }, []);
   return (
     <div>
+      <div>
+        <Link viewTransition={"home"} to={"/"}>
+          <div className="bg-purple-500">hello</div>
+        </Link>
+      </div>
       <h1>Product Page</h1>
       <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
         {products?.map((product) => (
-          <Link to={`/product/${product.id}`} key={product?.id}>
+          <Link
+            viewTransition={`product${product?.id}`}
+            to={`/product/${product.id}`}
+            key={product?.id}
+          >
             <div
               style={{
                 border: "1px solid",

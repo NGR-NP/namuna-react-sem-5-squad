@@ -5,6 +5,7 @@ import SingleProductPage, {
   ReviewPage,
 } from "./pages/product/signleProduct";
 import ProductPage from "./pages/product";
+import LoginPage, { useCheckAuth } from "./pages/LoginPage";
 
 export default function AppRoutes() {
   return (
@@ -21,7 +22,7 @@ export default function AppRoutes() {
         </Route>
         <Route path="*" element={<div>404</div>} />
       </Route>
-      <Route path="login" element={<div>Login Page</div>} />
+      <Route path="login" element={<LoginPage />} />
       <Route path="register" element={<div>Register Page</div>} />
     </Routes>
   );
@@ -48,7 +49,9 @@ const links = [
   },
 ];
 export function Navbar() {
+  const { handleLogout, isLoggedIn } = useCheckAuth();
   console.log("Navbar");
+
   return (
     <div>
       <div>Navbar</div>
@@ -64,6 +67,14 @@ export function Navbar() {
             {name}
           </NavLink>
         ))}
+        {isLoggedIn ? (
+          <div>
+            <p>welcome back</p>
+            <button onClick={handleLogout}>Logout</button>
+          </div>
+        ) : (
+          <NavLink to="/login">Login</NavLink>
+        )}
       </div>
     </div>
   );

@@ -44,6 +44,7 @@ export default function SingleProductPage() {
             backgroundColor: "purple",
             color: "white",
             padding: "1rem",
+            viewTransitionName: `product${product?.id}`,
           }}
         >
           <img src={product?.image} style={{ height: "3rem" }} />
