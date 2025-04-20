@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Link, Outlet, useLocation, useParams } from "react-router";
+import { useCallback, useEffect, useState } from "react";
+import { Link, Outlet, useLocation, useParams } from "react-router-dom";
 export default function SingleProductPage() {
   const location = useLocation();
   console.log(location);
@@ -8,7 +8,7 @@ export default function SingleProductPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [errr, setError] = useState(null);
-  const getData = async () => {
+  const getData = useCallback(async () => {
     setIsError(false);
     setIsLoading(true);
     try {
@@ -24,10 +24,10 @@ export default function SingleProductPage() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [productID]);
   useEffect(() => {
     getData();
-  }, []);
+  }, [getData]);
   const isINTabPage = location?.pathname?.split("/").filter(Boolean).at(-1);
   console.log(isINTabPage == "review" ? "../" : "#");
   return (

@@ -1,11 +1,18 @@
-import { Routes, Route, Outlet, Link, NavLink } from "react-router";
+import {
+  NavLink,
+  Outlet,
+  Route,
+  Routes,
+  createBrowserRouter,
+} from "react-router-dom";
 import HomePage from "./pages/homePage";
+import LoginPage, { useCheckAuth } from "./pages/LoginPage";
+import ProductPage from "./pages/product";
 import SingleProductPage, {
   OverviewPage,
   ReviewPage,
 } from "./pages/product/signleProduct";
-import ProductPage from "./pages/product";
-import LoginPage, { useCheckAuth } from "./pages/LoginPage";
+import CartPage from "./pages/cartPage";
 
 export default function AppRoutes() {
   return (
@@ -20,6 +27,7 @@ export default function AppRoutes() {
             <Route index element={<OverviewPage />} />
           </Route>
         </Route>
+        <Route path="cart" element={<CartPage />} />
         <Route path="*" element={<div>404</div>} />
       </Route>
       <Route path="login" element={<LoginPage />} />
@@ -47,6 +55,10 @@ const links = [
     path: "/product",
     name: "Product",
   },
+  {
+    path: "/cart",
+    name: "Cart",
+  },
 ];
 export function Navbar() {
   const { handleLogout, isLoggedIn } = useCheckAuth();
@@ -58,6 +70,7 @@ export function Navbar() {
       <div className="space-x-2">
         {links.map(({ name, path }) => (
           <NavLink
+            viewTransition
             className={({ isActive }) =>
               isActive ? "text-blue-600" : "text-gray-50"
             }
@@ -88,3 +101,55 @@ export function Footer() {
     </div>
   );
 }
+export const routes = createBrowserRouter([
+  {
+    path: "/",
+    element: <UserLayout />,
+    children: [
+      {
+        index: true,
+        element: <HomePage />,
+      },
+      {
+        path: "contact",
+        element: <div>Contact Page</div>,
+      },
+      {
+        path: "product",
+
+        children: [
+          {
+            index: true,
+            element: <ProductPage />,
+          },
+          {
+            path: ":productID",
+            element: <SingleProductPage />,
+            children: [
+              {
+                path: "review",
+                element: <ReviewPage />,
+              },
+              {
+                index: true,
+                element: <OverviewPage />,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        path: "*",
+        element: <div>404</div>,
+      },
+    ],
+  },
+  {
+    path: "login",
+    element: <LoginPage />,
+  },
+  {
+    path: "register",
+    element: <div>Register Page</div>,
+  },
+]);

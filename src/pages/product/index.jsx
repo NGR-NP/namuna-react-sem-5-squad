@@ -1,24 +1,32 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router";
+import { useCallback, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function ProductPage() {
   const [products, setProducts] = useState([]);
-  const getData = async () => {
+  const getData = useCallback(async () => {
     const res = await fetch("https://fakestoreapi.com/products");
     const data = await res.json();
     if (data && data.length) {
       setProducts(data);
     }
-  };
+  }, []);
   useEffect(() => {
     getData();
-  }, []);
+  }, [getData]);
   return (
     <div>
       <div>
-        <Link viewTransition={"home"} to={"/"}>
-          <div className="bg-purple-500">hello</div>
-        </Link>
+        <img
+          src="/vite.svg"
+          className="size-40"
+          style={{ viewTransitionName: "vite" }}
+        />
+        <div
+          className="bg-purple-500 h-40 transition-all duration-500 "
+          style={{ viewTransitionName: "home" }}
+        >
+          hello
+        </div>
       </div>
       <h1>Product Page</h1>
       <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>

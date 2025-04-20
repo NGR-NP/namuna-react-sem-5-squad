@@ -1,7 +1,7 @@
 // import { useReducer } from "react";
 
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 
 // const reducer = (state, action) => {
 //   if (action.type === "username") {
@@ -90,6 +90,7 @@ export default function LoginPage() {
         <div>
           <input type="password" name="password" placeholder="password" />
         </div>
+        <button type="">Reset</button>
         <button type="submit">Login</button>
       </form>
     </div>
